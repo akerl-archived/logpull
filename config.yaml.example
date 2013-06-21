@@ -1,0 +1,11 @@
+---
+host: imap.gmail.com
+username: user@example.com
+password: correcthorsebatteryholepunch
+new_label: Place/To/Look/In
+done_label: Place/To/Put/After
+paths:
+    - 'bydate/{year}/{month}/{day}/{hostname}'
+    - 'byhost/{hostname}/{year}/{month}/{day}'
+...
+
