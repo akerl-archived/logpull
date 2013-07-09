@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import subprocess
 import yaml
 import imaplib
 import email
@@ -33,6 +34,27 @@ with open(CONFIG_FILE) as handle:
 
 config.setdefault('port', 993)
 config.setdefault('log_dir', 'logs')
+
+if 'password' not in config:
+    print('Trying to load password from OSX keychain')
+    try:
+        config['password'] = [
+            x.split('"')[1]
+            for x in str(subprocess.check_output(
+                [
+                    'security',
+                    'find-generic-password',
+                    '-g',
+                    '-s', 'logpull',
+                    '-a', config['username'],
+                ],
+                stderr=subprocess.STDOUT
+            ), encoding='utf-8').split('\n')
+            if x.find('password:') == 0
+        ][0]
+    except:
+        print('Failed to load password')
+        raise
 
 imap_conn = imaplib.IMAP4_SSL(
     host=config['host'],
