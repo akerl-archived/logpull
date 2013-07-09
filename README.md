@@ -31,6 +31,5 @@ This uses the `security` CLI interface for keychain, so you'll get a popup askin
 
 ## License
 
-logpull is released under the MIT License. See the bundled LICENSE file for
-details.
+logpull is released under the MIT License. See the bundled LICENSE file for details.
 
