@@ -1,8 +1,9 @@
-# logpull
+project-x
+=========
 
 Pulls logs from an IMAP folder and extracts them locally for better searching
 
-## To use:
+## Usage
 
 1. Set up whatever you'd like to ship logs to your email address
  * the logs should be in an attached tarball
@@ -11,4 +12,13 @@ Pulls logs from an IMAP folder and extracts them locally for better searching
 3. Edit it with the correct host/username/password and labels
 4. When run, pull.py will extract the logs to the first path and symlink the other paths to that location
 5. Grep away!
+
+## Installation
+
+   git clone git://github.com/akerl/logpull
+
+## License
+
+logpull is released under the MIT License. See the bundled LICENSE file for
+details.
 
