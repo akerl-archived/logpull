@@ -35,26 +35,33 @@ with open(CONFIG_FILE) as handle:
 config.setdefault('port', 993)
 config.setdefault('log_dir', 'logs')
 
+if 'password_source' in config:
+    if 'password_source' == 'keychain':
+        print('Trying to load password from OSX keychain')
+        try:
+            config['password'] = [
+                x.split('"')[1]
+                for x in str(subprocess.check_output(
+                    [
+                        'security',
+                        'find-generic-password',
+                        '-g',
+                        '-s', 'logpull',
+                        '-a', config['username'],
+                    ],
+                    stderr=subprocess.STDOUT
+                ), encoding='utf-8').split('\n')
+                if x.find('password:') == 0
+            ][0]
+        except:
+            print('Failed to load password')
+            raise
+    else:
+        print('Unsupported password method')
+        raise SystemExit
 if 'password' not in config:
-    print('Trying to load password from OSX keychain')
-    try:
-        config['password'] = [
-            x.split('"')[1]
-            for x in str(subprocess.check_output(
-                [
-                    'security',
-                    'find-generic-password',
-                    '-g',
-                    '-s', 'logpull',
-                    '-a', config['username'],
-                ],
-                stderr=subprocess.STDOUT
-            ), encoding='utf-8').split('\n')
-            if x.find('password:') == 0
-        ][0]
-    except:
-        print('Failed to load password')
-        raise
+    print('No password provided')
+    raise SystemExit
 
 imap_conn = imaplib.IMAP4_SSL(
     host=config['host'],

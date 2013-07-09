@@ -13,6 +13,18 @@ Pulls logs from an IMAP folder and extracts them locally for better searching
 4. When run, pull.py will extract the logs to the first path and symlink the other paths to that location
 5. Grep away!
 
+### Alternate Password Sources
+
+Keeping the password in the yaml file doesn't make me happy, so logpull supports stashing the password elsewhere.
+
+To do this, just specify "password\_method: name" in the config file rather than providing a password.
+
+#### OSX Keychain
+
+In Keychain Access, select File -> New Password Item. The Keychain Item Name should be "logpull", and the account name should be your IMAP username.
+
+This uses the `security` CLI interface for keychain, so you'll get a popup asking for permission to access the keychain data when running pull.py
+
 ## Installation
 
    git clone git://github.com/akerl/logpull
