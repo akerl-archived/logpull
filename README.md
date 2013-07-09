@@ -1,4 +1,4 @@
-project-x
+logpull
 =========
 
 Pulls logs from an IMAP folder and extracts them locally for better searching
