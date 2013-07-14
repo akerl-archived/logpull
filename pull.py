@@ -36,7 +36,7 @@ config.setdefault('port', 993)
 config.setdefault('log_dir', 'logs')
 
 if 'password_source' in config:
-    if 'password_source' == 'keychain':
+    if config['password_source'] == 'keychain':
         print('Trying to load password from OSX keychain')
         try:
             config['password'] = [
