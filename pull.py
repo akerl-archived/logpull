@@ -97,12 +97,17 @@ for uid in uids:
 
     _, tmp_path = tempfile.mkstemp()
     for part in message.walk():
-        if part.get_content_type() != 'application/octet-stream':
+        if part.get_content_type() not in ['application/x-gzip', 'application/octet-stream']:
             continue
         with open(tmp_path, 'wb') as handle:
             handle.write(part.get_payload(decode=True))
         break
     with tarfile.open(tmp_path) as archive:
+        cwd = os.getcwd()
+        for path in archive.getmembers():
+            if not path.isfile() or os.path.abspath(path.name).find(cwd) != 0:
+                print('This tarball contains a malformed file: {0}'.format(path.name))
+                raise SystemExit
         archive.extractall(config['log_dir'] + '/' + paths[0])
     for path in paths[1:]:
         os.makedirs(
