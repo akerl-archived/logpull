@@ -7,6 +7,7 @@ import imaplib
 import email
 import tarfile
 import tempfile
+import gnupg
 
 CONFIG_FILE = 'config.yaml'
 
@@ -34,6 +35,8 @@ with open(CONFIG_FILE) as handle:
 
 config.setdefault('port', 993)
 config.setdefault('log_dir', 'logs')
+
+gpg = gnupg.GPG(binary='/usr/local/MacGPG2/bin/gpg2', homedir='gnupg')
 
 if 'password_source' in config:
     if config['password_source'] == 'keychain':
@@ -100,7 +103,11 @@ for uid in uids:
         if part.get_content_type() not in ['application/x-gzip', 'application/octet-stream']:
             continue
         with open(tmp_path, 'wb') as handle:
-            handle.write(part.get_payload(decode=True))
+            decrypted = gpg.decrypt(part.get_payload(decode=True))
+            if not decrypted.valid:
+                print('Invalid signature')
+                raise SystemExit
+            handle.write(decrypted.data)
         break
     with tarfile.open(tmp_path) as archive:
         cwd = os.getcwd()
