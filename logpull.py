@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import sys
 import subprocess
 import yaml
 import imaplib
@@ -23,10 +24,14 @@ def get_path():
     real_location = follow_symlink(first_location)
     return os.path.dirname(real_location)
 
-
 os.chdir(get_path())
 
-if not os.path.isfile(CONFIG_FILE):
+if len(sys.argv) > 1:
+    config_path = os.path.expanduser(sys.argv[1])
+else:
+    config_path = CONFIG_FILE
+
+if not os.path.isfile(config_path):
     print('No config.yaml found')
     raise SystemExit
 
