@@ -1,3 +1,5 @@
+**Inactive Project:** I no longer use this, and am working on building a logging workflow alongside Linux containers
+
 logpull
 =========
 
