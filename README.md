@@ -3,6 +3,8 @@
 logpull
 =========
 
+[![MIT Licensed](http://img.shields.io/badge/license-MIT-green.svg?style=flat)](https://tldrlegal.com/license/mit-license)
+
 Pulls logs from an IMAP folder and extracts them locally for better searching
 
 ## Usage
